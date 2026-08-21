@@ -518,12 +518,17 @@ section {
 
 /* Certificados */
 .card {
+    display: flex;
+    justify-content: space-around;
+    width: 400px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 28px;
+    padding: 10px;
     box-shadow: var(--shadow);
     transition: transform .25s, box-shadow .25s, background var(--transition), border-color var(--transition);
+    max-height: 160px;
+    gap: 22px;
 }
 
 .card:hover {
@@ -532,6 +537,7 @@ section {
 }
 
 .badge {
+    width: max-content;
     display: inline-block;
     background: var(--accent);
     color: #fff;
@@ -552,7 +558,7 @@ section {
 
 .certificates-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: 16px;
     margin-top: 26px;
 }
@@ -570,8 +576,33 @@ section {
     margin-top: 6px;
 }
 
+.card-desription {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 130px;
+}
 
+.pdf-preview {
+    width: max-content;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #252525;
+}
 
+.pdf-preview a {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.pdf-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
 
 
 /* Idiomas */
@@ -618,8 +649,19 @@ section {
 }
 
 
+/* Responsividade */
+@media (max-width: 768px) {
+    .card {
+        width: 100%;
+    }
 
-
+    .certificates-grid {
+        display: grid;
+        grid-template-columns: unset;
+        gap: 16px;
+        margin-top: 26px;
+    }
+}
 
 
 /*============================================= SEÇÃO 3 — PORTFÓLIO ============================================= */
