@@ -283,7 +283,7 @@ section {
 
 /* COMPONENTES REUTILIZÁVEIS  */
 .section-title {
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2rem, 6vw, 2.5rem);
     letter-spacing: 3px;
     color: var(--text);
     margin-bottom: 8px;
@@ -527,7 +527,7 @@ section {
     padding: 10px;
     box-shadow: var(--shadow);
     transition: transform .25s, box-shadow .25s, background var(--transition), border-color var(--transition);
-    max-height: 160px;
+    max-height: 150px;
     gap: 22px;
 }
 
