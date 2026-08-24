@@ -33,7 +33,7 @@ buttonTheme.addEventListener('click', () => {
   body.classList.toggle('dark');
 
   toggleBackgroundMonitor();
-  
+
   const isDark = body.classList.contains('dark');
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
@@ -114,12 +114,13 @@ sections.forEach(function (section) {
 
 
 // Comportamento do formulário
+
 const form = document.getElementById('form-contato');
 const modal = document.getElementById('modal');
 const btnClose = document.getElementById('btn-modal-close');
 
-
 // Auxiliares
+
 function validarEmail(email) {
   var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(email);
@@ -128,6 +129,7 @@ function validarEmail(email) {
 function setErro(inputId, erroId, mostrar) {
   var input = document.getElementById(inputId);
   var msg = document.getElementById(erroId);
+
   if (mostrar) {
     input.classList.add('error');
     msg.classList.add('show');
@@ -137,11 +139,10 @@ function setErro(inputId, erroId, mostrar) {
   }
 }
 
-
-
-
 // Evento de submissão do formulário
-form.addEventListener('submit', function (e) {
+
+form.addEventListener('submit', async function (e) {
+
   e.preventDefault();
 
   // Coleta os valores dos campos
@@ -151,7 +152,7 @@ form.addEventListener('submit', function (e) {
 
   var valido = true;
 
-  // Valida campo nome
+  // Valida nome
   if (nome === '') {
     setErro('nome', 'erro-nome', true);
     valido = false;
@@ -159,7 +160,7 @@ form.addEventListener('submit', function (e) {
     setErro('nome', 'erro-nome', false);
   }
 
-  // Valida campo e-mail
+  // Valida e-mail
   if (email === '' || !validarEmail(email)) {
     setErro('email', 'erro-email', true);
     valido = false;
@@ -167,7 +168,7 @@ form.addEventListener('submit', function (e) {
     setErro('email', 'erro-email', false);
   }
 
-  // Valida campo mensagem
+  // Valida mensagem
   if (mensagem === '') {
     setErro('mensagem', 'erro-mensagem', true);
     valido = false;
@@ -175,23 +176,70 @@ form.addEventListener('submit', function (e) {
     setErro('mensagem', 'erro-mensagem', false);
   }
 
-  // Se tudo válido, simula envio, limpa campos e exibe modal
-  if (valido) {
+  // Se houver algum erro, não envia
+  if (!valido) {
+    return;
+  }
+
+  // Desabilita o botão enquanto envia
+  const btnSubmit = form.querySelector('.btn-submit');
+  btnSubmit.disabled = true;
+  btnSubmit.textContent = 'Enviando...';
+
+  try {
+
+    const formData = new FormData(form);
+
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Erro ao enviar formulário');
+    }
+
+    // Limpa os campos
     form.reset();
+
+    // Mostra o modal
     modal.classList.add('open');
+
+  } catch (error) {
+
+    console.error('Erro ao enviar formulário:', error);
+
+    alert('Não foi possível enviar a mensagem. Tente novamente.');
+
+  } finally {
+
+    // Libera o botão novamente
+    btnSubmit.disabled = false;
+    btnSubmit.textContent = 'Enviar mensagem';
   }
 });
 
-// Fecha modal ao clicar no botão ou fora da caixa
+// Fecha modal ao clicar no botão
+
 btnClose.addEventListener('click', e => {
   modal.classList.remove('open');
 });
 
+// Fecha modal ao clicar fora da caixa
+
 modal.addEventListener('click', e => {
-  if (e.target === modal) modal.classList.remove('open');
+  if (e.target === modal) {
+    modal.classList.remove('open');
+  }
 });
 
 // Fecha modal com tecla Escape
+
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') modal.classList.remove('open');
+  if (e.key === 'Escape') {
+    modal.classList.remove('open');
+  }
 });
